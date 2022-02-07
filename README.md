@@ -19,3 +19,11 @@
 ![Untitled](read_png/Untitled.png)
 
 ---
+### 2일차
+
+2022-02-03
+
+- 자연어 처리를 위해 KoNLPy 설치후 Komoran 사용
+- 모듈 설치에 따란 오류  해결
+- Preprocess  클래스 블로그 따라 일부 작성
+- 3일차에 코드 분석 예정
