@@ -65,9 +65,9 @@ if submitted and user_input:
     st.session_state.past.append(user_input)
 
     # 챗봇 답변 저장
-    st.session_state.generated.append(answer['chatbot'])
+    st.session_state.generated.append(answer['챗봇'])
 
 for i in range(len(st.session_state['past'])):
     message(st.session_state['past'][i], is_user = True, key = str(i) + '_user')
-    if len(st.session_state['generated']) > i :
+    if len(st.session_state['generated']) > i:
         message(st.session_state['generated'][i], key= str(i) + '_bot')
