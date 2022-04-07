@@ -4,9 +4,9 @@
 
 ### Images ###
 # JPEG
-*.jpg
-*.jpeg
-*.jpe
+#*.jpg
+#*.jpeg
+#*.jpe
 *.jif
 *.jfif
 *.jfi
