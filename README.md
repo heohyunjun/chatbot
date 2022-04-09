@@ -1,31 +1,32 @@
 # 심리 상담 챗봇
-
 python version . 3. 9
-### 구동 환경
-- window 
+### app version
+- 1.0.0
 
-### 모델 학습
+### env
+- window
 - colab
 
 ### tool
 - pycharm
 
-### 데이터셋
-- AI허브에서 제공하는 웰니스 대화 스크립트를 사용하였습니다.
+### dataset
+- used the Wellness Conversation provided by the AI hub
+- Netflix_data by Kaggle
 
-### 아이디어
-- 발화간의 코사인 유사도(문서 유사도)를 통해 적절한 답변을 도출합니다.
+### Strategies
+- cosine similarity
 
-### 애플리케이션
-- streamlit을 사용해 웹 어플리케이션 구현
-- streamlit : 파이썬 기반으로 웹 어플리케이션을 개발하는 오픈소스
+### api
+- streamlit(A faster way to build and share data apps)
 
-### 구동
+### app start
 - streamlit run
 ![](jpg/20220407_230323.jpg)
 
-### 결과
-- 데이터셋도 매우적어서 데이터셋에 없는 발화에 대한 답변은 역시 기대하기 힘들다
+### reviews by version
+#### at version 1.0.0
+1. It is difficult to derive an appropriate utterance using only the similarity due to the lack of a dataset.
 
-### 추가 예정
-- 영화 추천 
+### to be updated
+- Netflix movie recommendations
