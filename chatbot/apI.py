@@ -6,10 +6,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 import json
 
 '''
-python 3.9 에서 streamlit 에러가 나지 않음
 
-모델 로드를 사용할떄마다 계속 부르게 되면 latency가 매우 길어짐
-따라서 한번 부르고 cache 형태로 불러옴
+No streamlit error in python 3.9
+
+If I keep calling every time you use the model load, the latency is very long.
+Therefore, it is called once and loaded in the form of cache.
 
 모델과 동일하게 데이터셋도 캐싱함
 
@@ -54,6 +55,8 @@ with st.form('form', clear_on_submit=True):
 
     # 전송 버튼
     submitted = st.form_submit_button('전송')
+
+    # 영화 추천 버튼
     netflix_submitted = st.form_submit_button('영화 추천 받기')
 
 # if submitted and user_input:
