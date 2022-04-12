@@ -54,19 +54,27 @@ with st.form('form', clear_on_submit=True):
 
     # 전송 버튼
     submitted = st.form_submit_button('전송')
+    netflix_submitted = st.form_submit_button('영화 추천 받기')
 
-if submitted and user_input:
-    embedding = model.encode(user_input)
-
-    df['similarity'] = df['embedding'].map(lambda x : cosine_similarity([embedding], [x]).squeeze())
-    answer = df.loc[df['similarity'].idxmax()]
-
+# if submitted and user_input:
+if user_input:
     # 유저 질문 저장
     st.session_state.past.append(user_input)
 
-    # 챗봇 답변 저장
-    st.session_state.generated.append(answer['챗봇'])
+    if submitted:
+        embedding = model.encode(user_input)
 
+        df['similarity'] = df['embedding'].map(lambda x : cosine_similarity([embedding], [x]).squeeze())
+        answer = df.loc[df['similarity'].idxmax()]
+
+        # 챗봇 답변 저장
+        st.session_state.generated.append(answer['챗봇'])
+    elif netflix_submitted:
+
+        answer = '영화 추천버튼이 클릭되었습니다.'
+        st.session_state.generated.append(answer)
+    else:
+        pass
 for i in range(len(st.session_state['past'])):
     message(st.session_state['past'][i], is_user = True, key = str(i) + '_user')
     if len(st.session_state['generated']) > i:
