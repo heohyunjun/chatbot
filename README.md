@@ -1,5 +1,6 @@
 # 심리 상담 챗봇
 python version . 3. 9
+
 ### app version
 - 1.0.0
 
