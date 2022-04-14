@@ -6,6 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+import datetime
 '''
 
 No streamlit error in python 3.9
@@ -45,6 +46,11 @@ model = cached_model()
 df = get_dataset()
 df2 = get_netflix()
 
+# 이직
+today = datetime.date.today()
+target_date = datetime.date(2024, 4, 7)
+d_day = target_date - today
+print(d_day)
 
 # 불용어 제거
 tfidf = TfidfVectorizer(stop_words='english')
@@ -69,18 +75,23 @@ with st.form('form', clear_on_submit=True):
     # 입력 텍스트 박스
     user_input = st.text_input('당신 :', "")
 
+    col1, col2 = st.columns(2)
     # 전송 버튼
-    submitted = st.form_submit_button('전송')
-
-    # 영화 추천 버튼
-    netflix_submitted = st.form_submit_button('영화 추천 받기')
+    with col1:
+        submitted = st.form_submit_button('전송')
+    with col2:
+        # 영화 추천 버튼
+        netflix_submitted = st.form_submit_button('영화 추천 받기')
 
 # if submitted and user_input:
 if user_input:
     # 유저 질문 저장
     st.session_state.past.append(user_input)
 
-    if submitted:
+    if submitted and user_input == '카카오 이직까지':
+        m_answer = f"카카오 이직까지 {d_day.days}일 남았습니다"
+        st.session_state.generated.append(m_answer)
+    elif submitted:
         embedding = model.encode(user_input)
 
         df['similarity'] = df['embedding'].map(lambda x : cosine_similarity([embedding], [x]).squeeze())
