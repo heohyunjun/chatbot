@@ -26,38 +26,60 @@ if submitted and user_input:
 2. 발화 라벨 전부와 코사인 유사도 계산해서 'similarity' 컬럼에 저장
 3. 유사도가 가장 높은 행 추출
 '''
+
+# 불용어 제거
+tfidf = TfidfVectorizer(stop_words='english')
+
+
 @st.cache(allow_output_mutation = True)
 def cached_model():
     model = SentenceTransformer('jhgan/ko-sroberta-multitask')
+
+
     return model
 
 @st.cache(allow_output_mutation = True)
 def get_dataset():
     df = pd.read_csv('chat_text.csv')
     df['embedding'] = df['embedding'].apply(json.loads)
+
+
     return df
 
 @st.cache(allow_output_mutation = True)
 def get_netflix():
     df2 = pd.read_csv('net_rec.csv')
+
+
     return df2
 
+@st.cache(allow_output_mutation=True)
+def cosine_netflix(x:pd.DataFrame):
+    # 영화설명 컬럼 학습
+    tfidf_matrix  =  tfidf.fit_transform(x['description'])
+    # linear_kernel : 사이킷런에서 제공하는 문서 유사도(코사인 유사도)를 계산 할 수 있음
+    cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+
+
+    return cosine_sim
+
+# model_load
 model = cached_model()
+
+# dataset load
 df = get_dataset()
+
+# movie_dataset load
 df2 = get_netflix()
 
-# 이직
+# cosine_similarity load
+cosine_sim = cosine_netflix(df2)
+
+# d-day for switch jobs
 today = datetime.date.today()
 target_date = datetime.date(2024, 4, 7)
 d_day = target_date - today
 print(d_day)
-
-# 불용어 제거
-tfidf = TfidfVectorizer(stop_words='english')
-# 영화설명 컬럼 학습
-tfidf_matrix = tfidf.fit_transform(df2['description'])
-# linear_kernel : 사이킷런에서 제공하는 문서 유사도(코사인 유사도)를 계산 할 수 있음
-cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 
 
 st.header('chat bot')
@@ -85,7 +107,7 @@ with st.form('form', clear_on_submit=True):
 
 # if submitted and user_input:
 if user_input:
-    # 유저 질문 저장
+    # save user_chatting
     st.session_state.past.append(user_input)
 
     if submitted and user_input == '카카오 이직까지':
@@ -112,6 +134,7 @@ if user_input:
         st.session_state.generated.append(answer)
     else:
         pass
+
 for i in range(len(st.session_state['past'])):
     message(st.session_state['past'][i], is_user = True, key = str(i) + '_user')
     if len(st.session_state['generated']) > i:
