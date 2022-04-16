@@ -1,19 +1,19 @@
-# 심리 상담 챗봇
-python version . 3. 9
+# chat bot 
+python version. 3. 9
 
 ### app version
 - 1.0.0
 
 ### env
 - window
-- colab
+- colab (for training algorithms)
 
 ### tool
 - pycharm
 
 ### dataset
 - used the Wellness Conversation provided by the AI hub
-- Netflix_data by Kaggle
+- used Netflix_data by Kaggle
 
 ### Strategies
 - cosine similarity
@@ -29,5 +29,8 @@ python version . 3. 9
 #### at version 1.0.0
 1. It is difficult to derive an appropriate utterance using only the similarity due to the lack of a dataset.
 
-### to be updated
+#### Update content
 - Netflix movie recommendations
+
+#### to be updated
+- 
