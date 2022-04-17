@@ -7,6 +7,7 @@ import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import datetime
+
 '''
 
 No streamlit error in python 3.9
@@ -31,37 +32,37 @@ if submitted and user_input:
 tfidf = TfidfVectorizer(stop_words='english')
 
 
-@st.cache(allow_output_mutation = True)
+@st.cache(allow_output_mutation=True)
 def cached_model():
     model = SentenceTransformer('jhgan/ko-sroberta-multitask')
 
-
     return model
 
-@st.cache(allow_output_mutation = True)
+
+@st.cache(allow_output_mutation=True)
 def get_dataset():
     df = pd.read_csv('chat_text.csv')
     df['embedding'] = df['embedding'].apply(json.loads)
 
-
     return df
 
-@st.cache(allow_output_mutation = True)
+
+@st.cache(allow_output_mutation=True)
 def get_netflix():
     df2 = pd.read_csv('net_rec.csv')
 
-
     return df2
 
+
 @st.cache(allow_output_mutation=True)
-def cosine_netflix(x:pd.DataFrame):
+def cosine_netflix(x: pd.DataFrame):
     # 영화설명 컬럼 학습
-    tfidf_matrix  =  tfidf.fit_transform(x['description'])
+    tfidf_matrix = tfidf.fit_transform(x['description'])
     # linear_kernel : 사이킷런에서 제공하는 문서 유사도(코사인 유사도)를 계산 할 수 있음
     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 
-
     return cosine_sim
+
 
 # model_load
 model = cached_model()
@@ -81,7 +82,6 @@ target_date = datetime.date(2024, 4, 7)
 d_day = target_date - today
 print(d_day)
 
-
 st.header('chat bot')
 
 if 'generated' not in st.session_state:
@@ -90,15 +90,19 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-
-# form 작성
+# form
 # clear_on_submit = True :  텍스트 박스에 입력하고 전송 누르면, 텍스트 박스가 clear
+'''
+    clear_on_submit
+        - if type in the TextBox and submit, eht TextBox will clear
+'''
 with st.form('form', clear_on_submit=True):
-    # 입력 텍스트 박스
+    # text_box for input
     user_input = st.text_input('당신 :', "")
 
     col1, col2 = st.columns(2)
-    # 전송 버튼
+
+    # submit_buttion
     with col1:
         submitted = st.form_submit_button('전송')
     with col2:
@@ -116,11 +120,12 @@ if user_input:
     elif submitted:
         embedding = model.encode(user_input)
 
-        df['similarity'] = df['embedding'].map(lambda x : cosine_similarity([embedding], [x]).squeeze())
+        df['similarity'] = df['embedding'].map(lambda x: cosine_similarity([embedding], [x]).squeeze())
         answer = df.loc[df['similarity'].idxmax()]
 
         # 챗봇 답변 저장
         st.session_state.generated.append(answer['챗봇'])
+
     elif netflix_submitted:
         print(user_input)
         idx = df2[df2['title'] == user_input].index[0]
@@ -129,13 +134,13 @@ if user_input:
 
         movie_idx = sim_scores[1][0]
         title = df2['title'].iloc[movie_idx]
-        # answer = '영화 추천버튼이 클릭되었습니다.'
+
         answer = title + "를 추천합니다"
         st.session_state.generated.append(answer)
     else:
         pass
 
 for i in range(len(st.session_state['past'])):
-    message(st.session_state['past'][i], is_user = True, key = str(i) + '_user')
+    message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
     if len(st.session_state['generated']) > i:
-        message(st.session_state['generated'][i], key= str(i) + '_bot')
+        message(st.session_state['generated'][i], key=str(i) + '_bot')
