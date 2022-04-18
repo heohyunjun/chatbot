@@ -96,6 +96,13 @@ if 'past' not in st.session_state:
     clear_on_submit
         - if type in the TextBox and submit, eht TextBox will clear
 '''
+# st.dataframe(df2[['title']].T)
+
+option = st.selectbox(
+    '추천가능한 영화 리스트',
+    df2['title']
+)
+st.write('You selected', option)
 with st.form('form', clear_on_submit=True):
     # text_box for input
     user_input = st.text_input('당신 :', "")
