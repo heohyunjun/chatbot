@@ -125,11 +125,9 @@ with st.form('form', clear_on_submit=True):
 if user_input == " ":
     if submitted:
         answer = '궁금한것을 말씀해주세요'
-        print(answer)
+        st.session_state.past.append(user_input)
         st.session_state.generated.append(answer)
-
 else:
-    print("틀림")
     # save user_chatting
     st.session_state.past.append(user_input)
 
@@ -157,38 +155,7 @@ else:
         st.session_state.generated.append(answer)
     else:
         pass
-# if user_input == " ":
-#     print('안녕')
-#     # save user_chatting
-#     st.session_state.past.append(user_input)
-#
-#     if submitted and user_input == '카카오 이직까지':
-#         m_answer = f"카카오 이직까지 {d_day.days}일 남았습니다"
-#         st.session_state.generated.append(m_answer)
-#
-#     elif submitted:
-#         embedding = model.encode(user_input)
-#         df['similarity'] = df['embedding'].map(lambda x: cosine_similarity([embedding], [x]).squeeze())
-#         answer = df.loc[df['similarity'].idxmax()]
-#
-#         # 챗봇 답변 저장
-#         st.session_state.generated.append(answer['챗봇'])
-#
-#     elif netflix_submitted:
-#         idx = df2[df2['title'] == user_input].index[0]
-#         sim_scores = list(enumerate(cosine_sim[idx]))
-#         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-#
-#         movie_idx = sim_scores[1][0]
-#         title = df2['title'].iloc[movie_idx]
-#
-#         answer = title + "를 추천합니다"
-#         st.session_state.generated.append(answer)
-#     else:
-#         pass
-# else:
-#     if submitted:
-#         print("틀림")
+
 
 for i in range(len(st.session_state['past'])):
     message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
