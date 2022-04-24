@@ -80,7 +80,7 @@ cosine_sim = cosine_netflix(df2)
 today = datetime.date.today()
 target_date = datetime.date(2024, 4, 7)
 d_day = target_date - today
-print(d_day)
+
 
 
 
@@ -100,18 +100,19 @@ if 'past' not in st.session_state:
 
 # st.dataframe(df2[['title']].T)
 
-option = st.selectbox(
-    '추천가능한 영화 리스트',
-    df2['title']
 
-)
 # st.write('You selected', option)
 with st.form('form', clear_on_submit=True):
     # text_box for input
 
+    option = st.selectbox(
+        '추천가능한 영화 리스트',
+        df2['title']
+
+    )
+
     # TODO
-    user_input = st.text_input("당신", " ")
-    # user_input = st.text_input('당신 :', "")
+    user_input = st.text_input("당신", "")
 
     col1, col2 = st.columns(2)
 
@@ -122,7 +123,19 @@ with st.form('form', clear_on_submit=True):
         # 영화 추천 버튼
         netflix_submitted = st.form_submit_button('영화 추천 받기')
 
-if user_input == " ":
+if netflix_submitted:
+    st.session_state.past.append(option)
+    idx = df2[df2['title'] == option].index[0]
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    movie_idx = sim_scores[1][0]
+    title = df2['title'].iloc[movie_idx]
+
+    answer = title + "를 추천합니다"
+    st.session_state.generated.append(answer)
+
+if user_input == "":
     if submitted:
         answer = '궁금한것을 말씀해주세요'
         st.session_state.past.append(user_input)
@@ -130,29 +143,17 @@ if user_input == " ":
 else:
     # save user_chatting
     st.session_state.past.append(user_input)
-
-    if submitted and user_input == '카카오 이직까지':
-        m_answer = f"카카오 이직까지 {d_day.days}일 남았습니다"
-        st.session_state.generated.append(m_answer)
-
-    elif submitted:
+    print(user_input)
+    if submitted:
+        if user_input == "카카오 이직까지":
+            m_answer = f"{user_input} {d_day.days}일 남았습니다"
+            st.session_state.generated.append(m_answer)
         embedding = model.encode(user_input)
         df['similarity'] = df['embedding'].map(lambda x: cosine_similarity([embedding], [x]).squeeze())
         answer = df.loc[df['similarity'].idxmax()]
 
         # 챗봇 답변 저장
         st.session_state.generated.append(answer['챗봇'])
-
-    elif netflix_submitted:
-        idx = df2[df2['title'] == user_input].index[0]
-        sim_scores = list(enumerate(cosine_sim[idx]))
-        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-
-        movie_idx = sim_scores[1][0]
-        title = df2['title'].iloc[movie_idx]
-
-        answer = title + "를 추천합니다"
-        st.session_state.generated.append(answer)
     else:
         pass
 
