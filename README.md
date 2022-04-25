@@ -23,7 +23,7 @@ python version. 3. 9
 
 ### app start
 - streamlit run
-![](jpg/20220407_230323.jpg)
+![](jpg/20220425_234242.png)
 
 ### reviews by version
 #### at version 1.0.0
@@ -33,4 +33,4 @@ python version. 3. 9
 - Netflix movie recommendations
 
 #### to be updated
-- welcom block
+- sharing using streamlit cloud
