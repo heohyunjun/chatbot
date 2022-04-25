@@ -25,12 +25,19 @@ python version. 3. 9
 - streamlit run
 ![](jpg/20220425_234242.png)
 
+
+when password is wrong
+![](jpg/not_auth.png)
+
+when password is correct
+![](jpg/is_auth.png)
+
 ### reviews by version
 #### at version 1.0.0
 1. It is difficult to derive an appropriate utterance using only the similarity due to the lack of a dataset.
 
 #### Update content
 - Netflix movie recommendations
-
+- You can only use the feature if you enter a password
 #### to be updated
 - sharing using streamlit cloud
