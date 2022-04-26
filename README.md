@@ -1,3 +1,5 @@
+# Use prototype
+[Shared by streamlit cloud](https://share.streamlit.io/heohyunjun/chatbot/main/chatbot/apI.py)
 # chat bot 
 python version. 3. 9
 
@@ -39,5 +41,6 @@ when password is correct
 #### Update content
 - Netflix movie recommendations
 - You can only use the feature if you enter a password
-#### to be updated
 - sharing using streamlit cloud
+#### to be updated
+- None
