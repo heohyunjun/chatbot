@@ -44,7 +44,7 @@ def main():
 
     @st.cache(allow_output_mutation=True)
     def get_dataset():
-        df = pd.read_csv('resource/chat_text.csv')
+        df = pd.read_csv('chatbot/resource/chat_text.csv')
         df['embedding'] = df['embedding'].apply(json.loads)
 
         return df
@@ -52,7 +52,7 @@ def main():
 
     @st.cache(allow_output_mutation=True)
     def get_netflix():
-        df2 = pd.read_csv('resource/net_rec.csv')
+        df2 = pd.read_csv('chatbot/resource/net_rec.csv')
 
         return df2
 
@@ -62,16 +62,16 @@ def main():
         # 영화설명 컬럼 학습
         tfidf_matrix = tfidf.fit_transform(x['description'])
         # linear_kernel : 사이킷런에서 제공하는 문서 유사도(코사인 유사도)를 계산 할 수 있음
-        cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+        cosine_sima = linear_kernel(tfidf_matrix, tfidf_matrix)
 
-        return cosine_sim
+        return cosine_sima
 
 
     # model_load
     model = cached_model()
 
     # dataset load
-    df = get_dataset()
+    dfc = get_dataset()
 
     # movie_dataset load
     df2 = get_netflix()
@@ -152,8 +152,8 @@ def main():
                 m_answer = f"{user_input} {d_day.days}일 남았습니다"
                 st.session_state.generated.append(m_answer)
             embedding = model.encode(user_input)
-            df['similarity'] = df['embedding'].map(lambda x: cosine_similarity([embedding], [x]).squeeze())
-            answer = df.loc[df['similarity'].idxmax()]
+            dfc['similarity'] = dfc['embedding'].map(lambda x: cosine_similarity([embedding], [x]).squeeze())
+            answer = dfc.loc[dfc['similarity'].idxmax()]
 
             # 챗봇 답변 저장
             st.session_state.generated.append(answer['챗봇'])
