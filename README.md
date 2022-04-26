@@ -1,5 +1,6 @@
 # Use prototype
 [Shared by streamlit cloud](https://share.streamlit.io/heohyunjun/chatbot/main/chatbot/apI.py)
+- want to use, type a 'hyunjun' with password
 # chat bot 
 python version. 3. 9
 
