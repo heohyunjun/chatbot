@@ -44,7 +44,7 @@ def main():
 
     @st.cache(allow_output_mutation=True)
     def get_dataset():
-        df = pd.read_csv('chat_text.csv')
+        df = pd.read_csv('./chat_text.csv')
         df['embedding'] = df['embedding'].apply(json.loads)
 
         return df
@@ -52,7 +52,7 @@ def main():
 
     @st.cache(allow_output_mutation=True)
     def get_netflix():
-        df2 = pd.read_csv('net_rec.csv')
+        df2 = pd.read_csv('./net_rec.csv')
 
         return df2
 
