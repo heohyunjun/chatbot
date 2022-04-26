@@ -226,7 +226,7 @@ cython_debug/
 env/
 *_mask*
 .vscode
-*.csv
+
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python,images,text
